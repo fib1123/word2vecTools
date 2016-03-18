@@ -8,6 +8,15 @@ PORT_NUMBER = 8080
 #the browser 
 class myHandler(BaseHTTPRequestHandler):
 	
+	def do_POST(self):	
+		if self.path=="/sentence-find-near":
+			length = int(self.headers['Content-Length'])
+			data = self.rfile.read(length)
+			self.send_response(200)
+			self.send_header('Content-type','text-plain')
+			self.end_headers()
+			self.wfile.write(data)
+
 	#Handler for the GET requests
 	def do_GET(self):
 		if self.path=="/":
