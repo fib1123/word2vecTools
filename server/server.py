@@ -12,10 +12,11 @@ class myHandler(BaseHTTPRequestHandler):
 		if self.path=="/sentence-find-near":
 			length = int(self.headers['Content-Length'])
 			data = self.rfile.read(length)
+			print data
 			self.send_response(200)
 			self.send_header('Content-type','text-plain')
 			self.end_headers()
-			self.wfile.write(data)
+			self.wfile.write(data + "dddd")
 
 	#Handler for the GET requests
 	def do_GET(self):
@@ -23,6 +24,8 @@ class myHandler(BaseHTTPRequestHandler):
 			self.path="/index.html"
 		if self.path=="/text-transform":
 			self.path="/text-transform.html"
+		if self.path=="/intelligent-editor":
+			self.path="/intelligent-editor.html"
 
 		try:
 			#Check the file extension required and
