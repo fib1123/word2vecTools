@@ -25,6 +25,17 @@ class myHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type','text-plain')
             self.end_headers()
             self.wfile.write(result)
+            
+        if self.path=="/find-analogy": #TODO
+			length = int(self.headers['Content-Length'])
+			data = self.rfile.read(length)
+			
+			print data
+			
+			self.send_response(200)
+			self.send_header('Content-type','text-plain')
+			self.end_headers()
+			self.wfile.write(data + "dddd")
 
     #Handler for the GET requests
     def do_GET(self):
@@ -36,6 +47,8 @@ class myHandler(BaseHTTPRequestHandler):
             self.path="/intelligent-editor.html"
         if self.path=="/word-cloud":
             self.path="/word-cloud.html"
+        if self.path=="/analogies":
+			self.path="/analogies.html"
 
         try:
             #Check the file extension required and
