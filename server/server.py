@@ -4,7 +4,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from os import curdir, sep
 
-from word2vec import transform_text
+from word2vec import transform_text, getKthNeighbour
 from polyglot.mapping import Embedding
 
 PORT_NUMBER = 8080
@@ -25,7 +25,23 @@ class myHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type','text-plain')
             self.end_headers()
             self.wfile.write(result)
-            
+
+        if self.path=="/word-find-near":
+            length = int(self.headers['Content-Length'])
+            data = self.rfile.read(length)
+
+            print data
+
+            elems = data.split()
+
+            result = getKthNeighbour(polish_embeddings, elems[0], int(elems[1]))
+
+            print result
+            self.send_response(200)
+            self.send_header('Content-type','text-plain')
+            self.end_headers()
+            self.wfile.write(result)
+
         if self.path=="/find-analogy": #TODO
 			length = int(self.headers['Content-Length'])
 			data = self.rfile.read(length)

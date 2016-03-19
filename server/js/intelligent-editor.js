@@ -1,9 +1,17 @@
-function requestForChangedText(text, cb) {
+var index = 0;
+var startWord = "";
+
+function resetIndex() {
+	index = 0;
+	startWord = "";
+}
+
+function requestForWord(text, index, cb) {
 		$.ajax({
-				url: "/sentence-find-near",
+				url: "/word-find-near",
 				method: "POST",
 				dataType: "text",
-				data: text,
+				data: text + " " + index,
 				success: cb
 		})
 }
@@ -64,25 +72,34 @@ function replaceCurrentWordWith(str) {
 	setCaretToPos(document.getElementById("main-text"), oldPosition);
 }
 
-function asciiMod(str, func) {
-	res = ""
-	for (var i = 0; i < str.length; i++) {
-		res += String.fromCharCode(func(str[i].charCodeAt(0)));
-	}
-	return res;
+function increase(num) { 
+	if (num <= 20) return num + 1; 
+	else return num;
+}
+function decrease(num) { 
+	if (num > 0) return num - 1;
+	else return num; 
 }
 
-function increase(num) { return num + 1; }
-function decrease(num) { return num - 1; }
+function toggleWord(f) {
+	if (startWord === "") {
+		startWord = getCurrentlySelectedWord();
+	}
+	index = f(index);
+	if (index > 0) requestForWord(startWord, index, replaceCurrentWordWith);
+	else replaceCurrentWordWith(startWord);
+}
 
 $(document).ready(function() {
 
 		document.addEventListener('keydown', function(event) {
 			if (event.keyCode == 16) {
-				replaceCurrentWordWith(asciiMod(getCurrentlySelectedWord(), increase));
+				toggleWord(decrease);
 			}
 			else if (event.keyCode == 17) {
-				replaceCurrentWordWith(asciiMod(getCurrentlySelectedWord(), decrease));
+				toggleWord(increase);
+			} else if (event.keyCode > 36 && event.keyCode < 41) {
+				resetIndex();
 			}
 		}, true);
 })
