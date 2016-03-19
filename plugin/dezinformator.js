@@ -28,8 +28,7 @@ function zamien(element_p) {
     text = text.replace("  ", " ");
     var splitted_text = text.split(" ");
     var text_without_short_words = [];
-    splitted_text.forEach(function(element)
-                          {
+    splitted_text.forEach(function(element) {
         if (element.length > 2) {
             text_without_short_words.push(element);
         }
@@ -43,39 +42,47 @@ function zamien(element_p) {
     }
 }
 
+function disinform(text) {
+    var current = 0;
+    var jump;
+    var splitted = text.split(" ");
+    while (current <= splitted.length) {
+        var newOne = requestForChangedText(splitted[current]);
+        splitted[current] = newOne;
+        jump = getRandomInt(2,10);
+        current += jump;
+    }
+    return splitted.join(" ");
+}
+
 //Avoid conflicts
 this.$ = this.jQuery = jQuery.noConflict(true);
 $(document).ready(function()
 {
+    console.log("ffff")
     GM_registerMenuCommand('Zdezinformuj!', function() {
-        $("p").each(function(i, element_p)
-        {
-            zamien(element_p);
-        });
-        $("li").each(function(i, element_p)
-        {
-            zamien(element_p);
-        });
-            
-        text_without_short_words.forEach(function(element)
-        {
-            requestForChangedText(element);
-        });
+        console.log("ffff2")
+        $("p, div, h1, h2, h3, h4, h5, h6")
+            .contents()
+            .filter(function() 
+                { return this.nodeType === 3; })
+            .each(function (i, e) 
+                {
+                    console.log($(e).text()); 
+                    $(e).text(disinform($(e).text())); })
     }, 'r');
 });
 
 function requestForChangedText(text) {
     var res = GM_xmlhttpRequest({
             method: "POST",
-            url: "http://192.168.201.234:8080/sentence-find-near",
+            url: "http://localhost:8080/sentence-find-near",
             data: text,
-            synchronous: false,
+            synchronous: true,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            onload: function(response) {
-                document.body.innerHTML = document.body.innerHTML.replace(text, response.responseText);
-            }
+            onload: function(data) { return data; }
         });
     return res.responseText;
 }
