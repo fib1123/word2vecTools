@@ -15,39 +15,46 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function zamien(element_p) {
+    var text = element_p.innerText;
+    text = text.replace("&nbsp", " ");
+    text = text.replace("(", " ");
+    text = text.replace(")", " ");
+    text = text.replace("!", " ");
+    text = text.replace("?", " ");
+    text = text.replace(",", " ");
+    text = text.replace(".", " ");
+    text = text.replace("   ", " "); //nie wiem, czy potrzebne
+    text = text.replace("  ", " ");
+    var splitted_text = text.split(" ");
+    var text_without_short_words = [];
+    splitted_text.forEach(function(element)
+                          {
+        if (element.length > 2) {
+            text_without_short_words.push(element);
+        }
+    });
+    var obecny = 0;
+    var przeskocz;
+    while (obecny<=text_without_short_words.length) {
+        requestForChangedText(text_without_short_words[obecny]);
+        przeskocz = getRandomInt(2,10);
+        obecny += przeskocz;
+    }
+}
+
 //Avoid conflicts
 this.$ = this.jQuery = jQuery.noConflict(true);
 $(document).ready(function()
 {
-    GM_registerMenuCommand('Zdezinformuj!', function() { 
-        $("p").each(function()
+    GM_registerMenuCommand('Zdezinformuj!', function() {
+        $("p").each(function(i, element_p)
         {
-            //alert("next <p> element: " + $(this)[0].innerText);
-            var text = $(this)[0].innerText;
-            text = text.replace("&nbsp", " ");
-            text = text.replace("(", " ");
-            text = text.replace(")", " ");
-            text = text.replace("!", " ");
-            text = text.replace("?", " ");
-            text = text.replace(",", " ");
-            text = text.replace(".", " ");
-            text = text.replace("   ", " "); //nie wiem, czy potrzebne
-            text = text.replace("  ", " ");
-            var splitted_text = text.split(" ");
-            var text_without_short_words = [];
-            splitted_text.forEach(function(element)
-            {
-                if (element.length > 2) {
-                    text_without_short_words.push(element);
-                }
-            });
-            var obecny = 0;
-            var przeskocz;
-            while (obecny<=text_without_short_words.length) {
-                requestForChangedText(text_without_short_words[obecny]);
-                przeskocz = getRandomInt(2,10);
-                obecny += przeskocz;
-            }
+            zamien(element_p);
+        });
+        $("li").each(function(i, element_p)
+        {
+            zamien(element_p);
         });
             
         text_without_short_words.forEach(function(element)
@@ -56,10 +63,11 @@ $(document).ready(function()
         });
     }, 'r');
 });
+
 function requestForChangedText(text) {
     var res = GM_xmlhttpRequest({
             method: "POST",
-            url: "http://172.27.0.103:8080/sentence-find-near",
+            url: "http://192.168.201.234:8080/sentence-find-near",
             data: text,
             synchronous: false,
             headers: {
