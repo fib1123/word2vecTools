@@ -8,6 +8,7 @@ import polyglot
 from polyglot.mapping import Embedding
 from polyglot.text import Text
 
+from sklearn.manifold import TSNE
 
 def transform_text(embeddings, text):
     parsedText = Text(text)
@@ -26,5 +27,8 @@ def transform_text(embeddings, text):
 
     return result
 
+
 def getKthNeighbour(embeddings, word, k):
-    return embeddings.nearest_neighbors(word, top_k=k)[-1]
+    if word in embeddings:
+        return embeddings.nearest_neighbors(word, top_k=k)[-1]
+    return word
