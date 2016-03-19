@@ -45,12 +45,16 @@ function zamien(element_p) {
 function disinform(text) {
     var current = 0;
     var jump;
+    var iterator = 0;
+    var list = [];
     var splitted = text.split(" ");
     while (current <= splitted.length) {
         var newOne = requestForChangedText(splitted[current]);
         splitted[current] = newOne;
+        list[iterator] = 
         jump = getRandomInt(2,10);
         current += jump;
+
     }
     return splitted.join(" ");
 }
@@ -69,7 +73,8 @@ $(document).ready(function()
             .each(function (i, e) 
                 {
                     console.log($(e).text()); 
-                    $(e).text(disinform($(e).text())); })
+                    disinform($(e).text(), function(newText) 
+                        { $(e).text(newText); }); })
     }, 'r');
 });
 
