@@ -4,9 +4,13 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from os import curdir, sep
 
-from word2vec import transform_text, getKthNeighbour
+from word2vec import transform_text, getKthNeighbour, closest_k_points_tsne
 from polyglot.mapping import Embedding
-from sklearn.manifold import TSNE
+
+from tsne import tsne
+from word2vec import transform_text
+
+# from sklearn.manifold import TSNE
 
 PORT_NUMBER = 8080
 polish_embeddings = Embedding.load("polyglot-pl.pkl")
@@ -15,10 +19,13 @@ polish_embeddings = Embedding.load("polyglot-pl.pkl")
 # ------------- t-SNE init ------------------------------
 # model = TSNE(n_components=2, random_state=0)
 # np.set_printoptions(suppress=True)
-# tsne_rep = model.fit_transform(polish_embeddings.vectors)
+# tsne_rep = tsne(polish_embeddings.vectors)
 
 # This class will handles any incoming request from
 # the browser
+
+print closest_k_points_tsne(polish_embeddings, "Beata", 10);
+
 class myHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path=="/sentence-find-near":
@@ -49,16 +56,20 @@ class myHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(result)
 
+        if self.path=="/get-points":
+        	length = int(self.headers['Content-Length'])
+          data = self.rfile.read(length)
+
         if self.path=="/find-analogy": #TODO
-			length = int(self.headers['Content-Length'])
-			data = self.rfile.read(length)
-			
-			print data
-			
-			self.send_response(200)
-			self.send_header('Content-type','text-plain')
-			self.end_headers()
-			self.wfile.write(data + "dddd")
+					length = int(self.headers['Content-Length'])
+					data = self.rfile.read(length)
+					
+					print data
+					
+					self.send_response(200)
+					self.send_header('Content-type','text-plain')
+					self.end_headers()
+					self.wfile.write(data + "dddd")
 
     #Handler for the GET requests
     def do_GET(self):
