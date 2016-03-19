@@ -29,6 +29,6 @@ def transform_text(embeddings, text):
 
 
 def getKthNeighbour(embeddings, word, k):
-    if word in embeddings:
+    #if word in embeddings:
         return embeddings.nearest_neighbors(word, top_k=k)[-1]
-    return word
+    #return word

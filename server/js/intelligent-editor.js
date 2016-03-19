@@ -6,6 +6,10 @@ function resetIndex() {
 	startWord = "";
 }
 
+function isStopCharacter(chr) {
+	return (chr == ' ' || chr == ',' || chr == '.' || chr == '?' || chr == ';' || chr == '!');
+}
+
 function requestForWord(text, index, cb) {
 		$.ajax({
 				url: "/word-find-near",
@@ -40,14 +44,14 @@ function getStartAndEndPosOfSelectedWord() {
 	var end = pos;
 	var start = pos;
 	for (var i = pos; i < text.length; i++) {
-		if (text[i] == ' ') {
+		if (isStopCharacter(text[i])) {
 			break;
 		} else {
 			end = i;
 		}
 	}
 	for (var i = pos; i >= 0; i--) {
-		if (text[i] == ' ') {
+		if (isStopCharacter(text[i])) {
 			break;
 		} else {
 			start = i;
