@@ -8,7 +8,9 @@ import polyglot
 from polyglot.mapping import Embedding
 from polyglot.text import Text
 
-from sklearn.manifold import TSNE
+import numpy as np
+from tsne import tsne
+
 
 def transform_text(embeddings, text):
     parsedText = Text(text)
@@ -32,3 +34,10 @@ def getKthNeighbour(embeddings, word, k):
     if word in embeddings:
         return embeddings.nearest_neighbors(word, top_k=k)[-1]
     return word
+
+
+def closest_k_points_tsne(embeddings, word, k):
+    neighbours = embeddings.nearest_neighbors(word, top_k=k)
+    X =  map(lambda x: embeddings.get(x).tolist(), neighbours)
+    return tsne.tsne(np.array(X))
+
