@@ -78,15 +78,15 @@ function decrease(num) { return num - 1; }
 function makeCircles() {
 
 	var spaceCircles = [
-		{ "cx": 20, "cy": 20, "radius": 5, "color" : "green", "label": "a1" },
-		{ "cx": 70, "cy": 70, "radius": 5, "color" : "purple", "label": "a2" }
+		{ "cx": 20, "cy": 20, "radius": 5, "color" : "green", "label": "pies" },
+		{ "cx": 70, "cy": 70, "radius": 5, "color" : "purple", "label": "kot" }
 	];
 
 	var svgContainer = d3.select("#viz-container").append("svg")
 		.attr("width", 200)
 		.attr("height", 200);
 
-	var labels = d3.selectAll("text")
+	var labels = svgContainer.selectAll("text")
 		.data(spaceCircles)
 		.enter()
 		.append("text");
@@ -96,11 +96,11 @@ function makeCircles() {
 		.enter()
 		.append("circle");
 
-	labels.append("text")
+	labels
 		.text(function(d) {	return d.label; })
 		.attr("x", function(d) { return d.cx + d.radius; })
 		.attr("y", function(d) { return d.cy + d.radius; })
-		.attr("font-size", 10)
+		.attr("font-size", 12)
 		.attr("font-family", "serif");
 
 	var circleAttributes = circles
