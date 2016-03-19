@@ -95,21 +95,15 @@ function toggleWord(f) {
 }
 
 $(document).ready(function() {
-		var step = 10;
 
 		document.addEventListener('keydown', function(event) {
-			if (event.keyCode == 107) { //+
-				zoom(function(x) { return x * 1.5 })
-			} else if (event.keyCode == 109) { //-
-				zoom(function(x) { return x / 1.5 })
-			} else if (event.keyCode == 37) { //left
-				move(function(coords) { coords.x = coords.x - step; var newCoords = coords; })
-			} else if (event.keyCode == 38) { //up
-				move(function(coords) { coords.x = coords.y - step; var newCoords = coords; })
-			} else if (event.keyCode == 39) { //right
-				move(function(coords) { coords.x = coords.x + step; var newCoords = coords; })
-			} else if (event.keyCode == 40) { //down
-				move(function(coords) { coords.x = coords.y + step; var newCoords = coords; })
+			if (event.keyCode == 16) {
+				toggleWord(decrease);
+			}
+			else if (event.keyCode == 17) {
+				toggleWord(increase);
+			} else if (event.keyCode > 36 && event.keyCode < 41) {
+				resetIndex();
 			}
 		}, true);
 })
