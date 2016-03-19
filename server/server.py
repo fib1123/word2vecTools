@@ -26,6 +26,8 @@ class myHandler(BaseHTTPRequestHandler):
 			self.path="/text-transform.html"
 		if self.path=="/intelligent-editor":
 			self.path="/intelligent-editor.html"
+		if self.path=="/word-cloud":
+			self.path="/word-cloud.html"
 
 		try:
 			#Check the file extension required and
