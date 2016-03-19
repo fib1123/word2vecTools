@@ -6,7 +6,7 @@ from os import curdir, sep
 
 from polyglot.mapping import Embedding
 
-from notebooks.tsne import tsne
+from tsne import tsne
 from word2vec import transform_text
 
 # from sklearn.manifold import TSNE
@@ -18,7 +18,7 @@ polish_embeddings = Embedding.load("polyglot-pl.pkl")
 # ------------- t-SNE init ------------------------------
 # model = TSNE(n_components=2, random_state=0)
 # np.set_printoptions(suppress=True)
-tsne_rep = tsne(polish_embeddings.vectors)
+# tsne_rep = tsne(polish_embeddings.vectors)
 
 # This class will handles any incoming request from
 # the browser
