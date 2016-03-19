@@ -7,6 +7,8 @@ from os import curdir, sep
 from word2vec import transform_text, getKthNeighbour, closest_k_points_tsne
 from polyglot.mapping import Embedding
 
+import json
+
 from tsne import tsne
 from word2vec import transform_text
 
@@ -24,7 +26,7 @@ polish_embeddings = Embedding.load("polyglot-pl.pkl")
 # This class will handles any incoming request from
 # the browser
 
-print closest_k_points_tsne(polish_embeddings, "Beata", 10);
+print json.dumps(closest_k_points_tsne(polish_embeddings, "Beata", 10))
 
 class myHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -57,8 +59,16 @@ class myHandler(BaseHTTPRequestHandler):
             self.wfile.write(result)
 
         if self.path=="/get-points":
-        	length = int(self.headers['Content-Length'])
-          data = self.rfile.read(length)
+            length = int(self.headers['Content-Length'])
+            data = self.rfile.read(length)
+            lst = data.split()
+            word = lst[0]
+            k = int(lst[1])
+            dct = closest_k_points_tsne(polish_embeddings, word, k)
+            self.send_response(200)
+            self.send_header('Content-type','application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(dct))
 
         if self.path=="/find-analogy": #TODO
 					length = int(self.headers['Content-Length'])

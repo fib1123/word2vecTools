@@ -37,13 +37,13 @@ def getKthNeighbour(embeddings, word, k):
 
 
 def closest_k_points_tsne(embeddings, word, k):
-    neighbours = embeddings.nearest_neighbors(word, top_k=k)
+    neighbours = embeddings.nearest_neighbors(word, top_k=k) + [word]
     X =  map(lambda x: embeddings.get(x).tolist(), neighbours)
     tsne_reps = tsne(np.array(X))
     result = []
-    for i in len(neighbours):
-        result[i] = {}
-        result[i]['word'] = i
+    for i in range(len(neighbours)):
+        result.append({})
+        result[i]['label'] = neighbours[i]
         result[i]['x'] = tsne_reps[i][0]
         result[i]['y'] = tsne_reps[i][1]
     return result
