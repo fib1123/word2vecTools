@@ -22,7 +22,7 @@ function updatePoints(newPoints, newColor, requestWord) {
 	var updatedPoints = [];
 	var added = 0;
 	for (var i = 0; i < points.length; i++) {
-		if (points[i].color != newColor) {
+		if (points[i].color != newColor && points[i].color != selectedPointColor) {
 			updatedPoints.push(points[i]);
 			added++;
 		}

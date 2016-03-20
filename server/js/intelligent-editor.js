@@ -97,10 +97,11 @@ function toggleWord(f) {
 $(document).ready(function() {
 
 		document.addEventListener('keydown', function(event) {
-			if (event.keyCode == 16) {
+			console.log(event.keyCode);
+			if (event.keyCode == 145) {
 				toggleWord(decrease);
 			}
-			else if (event.keyCode == 17) {
+			else if (event.keyCode == 20) {
 				toggleWord(increase);
 			} else if (event.keyCode > 36 && event.keyCode < 41) {
 				resetIndex();
